@@ -3,12 +3,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/giorgisio/goav/avcodec"
-	"github.com/giorgisio/goav/avutil"
 	"io"
 	"log"
 	"os"
 	"unsafe"
+
+	"github.com/sxhxliang/goav/avcodec"
+	"github.com/sxhxliang/goav/avutil"
 )
 
 const INBUF_SIZE = 4096
@@ -56,30 +57,30 @@ func save_gray_frame(avFrame *avcodec.Frame, fileName string) {
 	defer file.Close()
 
 	header := fmt.Sprintf("P5\n%d %d\n255\n", avFrame.GetWidth(), avFrame.GetHeight())
-	_,err =file.Write([]byte(header))
-	if err != nil{
-		log.Fatalf("can not write to file,the err is %v",err)
+	_, err = file.Write([]byte(header))
+	if err != nil {
+		log.Fatalf("can not write to file,the err is %v", err)
 	}
 
 	buffer := avFrame.GetData()
-	_,err =file.Write(buffer[0])
-	if err != nil{
-		log.Fatalf("can not write to file,the err is %v",err)
+	_, err = file.Write(buffer[0])
+	if err != nil {
+		log.Fatalf("can not write to file,the err is %v", err)
 	}
 	return
 }
 
 func main() {
-	filename := "/Users/jason12360/Desktop/128x128.264/128x128.264"
+	filename := "./cuc_ieschool.h264"
 
 	// Register all formats and codecs
 
 	avCodec := avcodec.AvcodecFindDecoder((avcodec.CodecId)(avcodec.AV_CODEC_ID_H264))
-	if avCodec == nil{
+	if avCodec == nil {
 		log.Fatal("Codec not found")
 	}
 	parser := avcodec.AvParserInit(avCodec.AvCodecGetId())
-	if parser==nil{
+	if parser == nil {
 		log.Fatal("parser not found")
 	}
 
@@ -109,34 +110,34 @@ func main() {
 	}
 	defer avPacket.AVPacketFree()
 
-	mediaFile,err := os.Open(filename)
+	mediaFile, err := os.Open(filename)
 	if err != nil {
 		log.Fatal("read fail")
 	}
 	defer mediaFile.Close()
 
-	buf := make([]byte,INBUF_SIZE)
+	buf := make([]byte, INBUF_SIZE)
 
-	for {
-		n,err := mediaFile.Read(buf)
-		if err != nil && err != io.EOF{
-			log.Fatal("read buf fail",err)
+	for i:=0; i<3; i++ {
+		n, err := mediaFile.Read(buf)
+		if err != nil && err != io.EOF {
+			log.Fatal("read buf fail", err)
 		}
-		if n ==0{
+		if n == 0 {
 			break
 		}
 		data := buf
 
-		for n >0{
+		for n > 0 {
 			var avPacketData *byte
 			var avPacketSize int
-			ret := avCodecContext.AvParserParse2(parser,&avPacketData,&avPacketSize,&data[0],n,avutil.AV_NOPTS_VALUE,avutil.AV_NOPTS_VALUE,0)
-			if ret<0{
+			ret := avCodecContext.AvParserParse2(parser, &avPacketData, &avPacketSize, &data[0], n, avutil.AV_NOPTS_VALUE, avutil.AV_NOPTS_VALUE, 0)
+			if ret < 0 {
 				log.Fatal("Error while parsing")
 			}
 			data = data[ret:]
-			n = n-ret
-			if avPacketSize>0{
+			n = n - ret
+			if avPacketSize > 0 {
 				avPacket.SetData(avPacketData)
 				avPacket.SetSize(avPacketSize)
 				decodePacket(avPacket, avCodecContext, (*avcodec.Frame)(unsafe.Pointer(avFrame)))

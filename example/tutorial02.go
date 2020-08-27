@@ -1,4 +1,5 @@
 package main
+
 // tutorial02.go
 // Code based on a tutorial at https://github.com/leandromoreira/ffmpeg-libav-tutoria
 
@@ -14,12 +15,13 @@ package main
 // format.
 import (
 	"fmt"
-	"github.com/giorgisio/goav/avcodec"
-	"github.com/giorgisio/goav/avformat"
-	"github.com/giorgisio/goav/avutil"
 	"log"
 	"os"
 	"unsafe"
+
+	"github.com/sxhxliang/goav/avcodec"
+	"github.com/sxhxliang/goav/avformat"
+	"github.com/sxhxliang/goav/avutil"
 )
 
 func main() {
@@ -106,8 +108,6 @@ func main() {
 		return
 	}
 
-
-
 	timesLimit := 8
 	for ctx.AvReadFrame(avPacket) >= 0 {
 		if avPacket.StreamIndex() == videoStreamIndex {
@@ -172,15 +172,15 @@ func save_gray_frame(avFrame *avcodec.Frame, fileName string) {
 	defer file.Close()
 
 	header := fmt.Sprintf("P5\n%d %d\n255\n", avFrame.GetWidth(), avFrame.GetHeight())
-	_,err =file.Write([]byte(header))
-	if err != nil{
-		log.Fatalf("can not write to file,the err is %v",err)
+	_, err = file.Write([]byte(header))
+	if err != nil {
+		log.Fatalf("can not write to file,the err is %v", err)
 	}
 
 	buffer := avFrame.GetData()
-	_,err =file.Write(buffer[0])
-	if err != nil{
-		log.Fatalf("can not write to file,the err is %v",err)
+	_, err = file.Write(buffer[0])
+	if err != nil {
+		log.Fatalf("can not write to file,the err is %v", err)
 	}
 	return
 }

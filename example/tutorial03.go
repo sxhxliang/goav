@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/giorgisio/goav/avcodec"
-	"github.com/giorgisio/goav/avformat"
-	"github.com/giorgisio/goav/avutil"
+	"github.com/sxhxliang/goav/avcodec"
+	"github.com/sxhxliang/goav/avformat"
+	"github.com/sxhxliang/goav/avutil"
 	"log"
 )
 
