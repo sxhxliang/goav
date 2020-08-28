@@ -21,8 +21,8 @@ import "C"
 import (
 	"unsafe"
 
-	"github.com/giorgisio/goav/avcodec"
-	"github.com/giorgisio/goav/avutil"
+	"github.com/sxhxliang/goav/avcodec"
+	"github.com/sxhxliang/goav/avutil"
 )
 
 type (
@@ -136,7 +136,7 @@ func (s *Stream) AvStreamGetSideData(t AvPacketSideDataType, z int) *uint8 {
 //Allocate an Context for an output format.
 func AvAllocOutputContext2(ctx **Context, o *OutputFormat, format, filename *string) int {
 	var CFormatName *C.char
-	if format != nil{
+	if format != nil {
 		CFormatName = C.CString(*format)
 	}
 	defer C.free(unsafe.Pointer(CFormatName))

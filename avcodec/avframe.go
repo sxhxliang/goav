@@ -2,8 +2,9 @@ package avcodec
 
 import "C"
 import (
-	"github.com/giorgisio/goav/avutil"
 	"unsafe"
+
+	"github.com/sxhxliang/goav/avutil"
 )
 
 func (f *Frame) Pts() int64 {
@@ -14,8 +15,8 @@ func (f *Frame) GetPicType() avutil.AvPictureType {
 	return (avutil.AvPictureType)(f.pict_type)
 }
 
-func (f *Frame) SetPicType(pictureType avutil.AvPictureType)  {
-	f.pict_type =  uint32(pictureType)
+func (f *Frame) SetPicType(pictureType avutil.AvPictureType) {
+	f.pict_type = uint32(pictureType)
 }
 
 func (f *Frame) GetPktSize() int {
@@ -41,15 +42,15 @@ func (f *Frame) GetHeight() int {
 	return int(f.height)
 }
 
-func (f *Frame) GetData() [][]byte{
+func (f *Frame) GetData() [][]byte {
 	var data [][]byte
 	var slice []byte
-	for i:=0;i<len(f.linesize);i++ {
+	for i := 0; i < len(f.linesize); i++ {
 		wrap := int(f.linesize[i])
-		if f.data[i] != nil{
-			slice = ((*[2<<31]byte)(unsafe.Pointer(f.data[i])))[:f.GetHeight()*wrap]
+		if f.data[i] != nil {
+			slice = ((*[2 << 31]byte)(unsafe.Pointer(f.data[i])))[:f.GetHeight()*wrap]
 		}
-		data = append(data,slice)
+		data = append(data, slice)
 	}
 	return data
 }

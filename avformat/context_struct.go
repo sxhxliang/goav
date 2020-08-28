@@ -10,7 +10,7 @@ import (
 	"reflect"
 	"unsafe"
 
-	"github.com/giorgisio/goav/avutil"
+	"github.com/sxhxliang/goav/avutil"
 )
 
 func (ctxt *Context) Chapters() **AvChapter {
@@ -280,4 +280,3 @@ func (ctxt *Context) SetPb(pb *AvIOContext) {
 func (ctxt *Context) Pb2() **AvIOContext {
 	return (**AvIOContext)(unsafe.Pointer(&ctxt.pb))
 }
-

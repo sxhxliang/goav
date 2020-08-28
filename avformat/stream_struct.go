@@ -9,8 +9,8 @@ import "C"
 import (
 	"unsafe"
 
-	"github.com/giorgisio/goav/avcodec"
-	"github.com/giorgisio/goav/avutil"
+	"github.com/sxhxliang/goav/avcodec"
+	"github.com/sxhxliang/goav/avutil"
 )
 
 func (avs *Stream) CodecParameters() *avcodec.AvCodecParameters {
@@ -61,9 +61,10 @@ func (avs *Stream) TimeBase() avcodec.Rational {
 	return newRational(avs.time_base)
 }
 
-func (avs *Stream) SetTimeBase(rational avcodec.Rational)  {
+func (avs *Stream) SetTimeBase(rational avcodec.Rational) {
 	avs.time_base = *(*C.struct_AVRational)(unsafe.Pointer(&rational))
 }
+
 // func (avs *Stream) RecommendedEncoderConfiguration() string {
 // 	return C.GoString(avs.recommended_encoder_configuration)
 // }
